@@ -2,10 +2,13 @@
 #include <graphics.h>  
 #include <stdio.h>
 #include<conio.h>
+#include <stdlib.h>
+#include <time.h>
 #pragma comment(lib, "MSIMG32.LIB")
 void putimage_a(int x, int y, IMAGE* pImg);
 void login();
 IMAGE* drawrubbish();
+void solar1(IMAGE* rubbish);
 int main() {
 	initgraph(1300, 700);
 	setbkmode(TRANSPARENT);
