@@ -4,7 +4,7 @@
 #include<conio.h>
 #include <stdlib.h>
 #include <time.h>
-#pragma comment(lib, "MSIMG32.LIB")
+//#pragma comment(lib, "MSIMG32.LIB")
 void putimage_a(int x, int y, IMAGE* pImg);
 bool login();
 IMAGE* drawrubbish();
