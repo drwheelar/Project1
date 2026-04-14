@@ -5,7 +5,10 @@
 #pragma comment(lib, "MSIMG32.LIB")
 void putimage_a(int x, int y, IMAGE* pImg);
 
-void login() {
+bool login() {
+    initgraph(1300, 700);
+    wchar_t namest[15];
+    wchar_t passst[16];
     IMAGE cover, Login;
     loadimage(&cover, _T("D:\\game\\pack\\login\\cover.png"), 1300, 700);
     loadimage(&Login, _T("D:\\game\\pack\\login\\start.png"), 400, 160);
@@ -35,8 +38,6 @@ void login() {
     putimage(425, 350, &pass);
     putimage(450, 440, &logbut);
     putimage(700, 440, &regbut);
-    wchar_t namest[15];
-    wchar_t passst[16];
     char ch;
     int a = 0, b = 0;
     namest[0] = '\0';
@@ -147,5 +148,5 @@ void login() {
             }
         }
     }
-    return;
+    return true;
 }

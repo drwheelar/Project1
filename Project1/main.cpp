@@ -6,9 +6,10 @@
 #include <time.h>
 #pragma comment(lib, "MSIMG32.LIB")
 void putimage_a(int x, int y, IMAGE* pImg);
-void login();
+bool login();
 IMAGE* drawrubbish();
-void solar1(IMAGE* rubbish);
+void play(IMAGE* rubbish);
+void solar1(IMAGE* rubbish,char exception[], int a, int b, int c);
 int main() {
 	initgraph(1300, 700);
 	setbkmode(TRANSPARENT);
@@ -19,16 +20,20 @@ int main() {
 	putimage(0, 0, &cover);
 	putimage_a(450, 500, &Login);
 	IMAGE* rubbish;
-		login();
-		rubbish=drawrubbish();
+	if (login()) {
+		rubbish = drawrubbish();
 		setbkcolor(BLUE);
 		BeginBatchDraw();
 		cleardevice();
-		putimage_a(0, 0,rubbish);
+		putimage_a(0, 0, rubbish);
 		FlushBatchDraw();
 		EndBatchDraw();
-		while(1){}
+		while (1) { play(rubbish); }
 
-	
+	}
 	return 1;
+}
+void play(IMAGE*rubbish) {
+	char str[] = "silicon";
+	solar1(rubbish,str, 5,50,50);
 }
