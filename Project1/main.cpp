@@ -4,11 +4,12 @@
 #include<conio.h>
 #include <stdlib.h>
 #include <time.h>
+#include<math.h>
 //#pragma comment(lib, "MSIMG32.LIB")
 void putimage_a(int x, int y, IMAGE* pImg);
 bool login();
 IMAGE* drawrubbish();
-void play(IMAGE* rubbish);
+void play();
 void solar1(IMAGE* rubbish,char exception[], int a, int b, int c);
 int main() {
 	initgraph(1300, 700);
@@ -28,12 +29,13 @@ int main() {
 		putimage_a(0, 0, rubbish);
 		FlushBatchDraw();
 		EndBatchDraw();
-		while (1) { play(rubbish); }
+		while (1) { play();}
 
 	}
 	return 1;
 }
-void play(IMAGE*rubbish) {
+void play() {
 	char str[] = "silicon";
+	IMAGE* rubbish = new IMAGE();
 	solar1(rubbish,str, 5,50,50);
 }

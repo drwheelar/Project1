@@ -128,11 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="drawrubbish.cpp" />
+    <ClCompile Include="RotateImageAlpha.cpp" />
+    <ClCompile Include="show-solar1.cpp" />
     <ClCompile Include="solar1.cpp" />
     <ClCompile Include="transparentimage.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="putimage_a.cpp" />
+    <ClCompile Include="updataWithoutInput.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

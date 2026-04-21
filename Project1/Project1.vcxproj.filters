@@ -33,5 +33,14 @@
     <ClCompile Include="solar1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="RotateImageAlpha.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="updataWithoutInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="show-solar1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
