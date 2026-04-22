@@ -37,10 +37,12 @@ void updataWithoutInput(bulletchain* bullet, item* oxygen, item* carbon, item* i
 	int* oxygennumber, int* carbonnumber, int* ironnumber, int* siliconnumber, int* rubbishnumber, int* oxygengain,
 	int* carbongain, int* irongain, int* silicongain, char exception[]);
 void updataWithInput(bulletchain* bullet, item* a, item* b, item* c, item* d, item* e,double*shootrad,int*stop,
-	int speed1, int size1, int attack1);
+	int speed1, int size1, int attack1,IMAGE *bulletimg);
 void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, item* carbon, item* iron,
 	item* silicon, item* rubbish, IMAGE* after, double shootrad, char exception[]);
 void solar1(IMAGE* rubbishpic, char exception[], int speed1, int size1, int attack1){
+	static IMAGE* bulletimg=NULL;
+	loadimage(bulletimg, _T("D:\\game\\pack\\solar1\\shooter\\bullet.png"), 40, 40);
 	IMAGE* cover = new IMAGE();
 	loadimage(cover, _T("D:\\game\\pack\\solar1\\background\\cover.png"), 1300, 700);
 	putimage(0, 0, cover);
@@ -71,9 +73,8 @@ void solar1(IMAGE* rubbishpic, char exception[], int speed1, int size1, int atta
 		if (stop == 1) continue;
 		updataWithoutInput(bullet,oxygen,carbon,iron,silicon,rubbish,&oxygennumber,&carbonnumber,
 			&ironnumber,&siliconnumber,&rubbishnumber,&oxygengain,&carbongain,&irongain,&silicongain,exception);
-		updataWithInput(bullet, oxygen, carbon, iron, silicon, rubbish, &shootrad,& stop, speed1, size1,  attack1);
+		updataWithInput(bullet, oxygen, carbon, iron, silicon, rubbish, &shootrad,& stop, speed1, size1,  attack1,bulletimg);
 		show(rubbishpic, cover, bullet, oxygen, carbon, iron, silicon, rubbish, after, shootrad, exception);
-		Sleep(10);
 
 	}
 }
@@ -137,7 +138,7 @@ void inititem(item* start) {
 		}
 }
 void updataWithInput(bulletchain* bullet, item* a, item* b, item* c, item* d, item* e,double*shootrad,int*stop,
-	int speed1, int size1, int attack1){
+	int speed1, int size1, int attack1,IMAGE *bulletimg){
 	ExMessage m;
 	if (peekmessage(&m, EX_MOUSE) && m.message == WM_LBUTTONDOWN) {
 		if (m.x > 1125 && m.x < 1275 && m.y>275 && m.y < 325) {
@@ -152,10 +153,8 @@ void updataWithInput(bulletchain* bullet, item* a, item* b, item* c, item* d, it
 			else if (key == 75) *shootrad -= 5;
 			else if (key == 72) {
 				bulletchain* newbullet = new bulletchain();
-				IMAGE bulletpicture;
-				loadimage(&bulletpicture, _T("D:\\game\\pack\\solar1\\shooter\\bullet.png"), 40, 40);
-				newbullet->bulletpic = &bulletpicture;
 				newbullet->rad = *shootrad;
+				RotateImageAlpha(newbullet->bulletpic,bulletimg, newbullet->rad, 25, 25, false);
 				double angle = *shootrad * PI / 180;
 				if (angle <= 0) {
 					newbullet->x = 650 + 125 * sin(angle) - 25 * cos(angle);

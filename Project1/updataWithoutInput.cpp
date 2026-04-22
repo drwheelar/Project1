@@ -28,129 +28,94 @@ typedef struct bulletchain {
 	int hit;
 	struct bulletchain* next;
 };
+void updateList(item** head, int* count);
 void inititem(item* start);//初始化单个陨石
 void updataWithoutInput(bulletchain* bullet, item* oxygen, item* carbon, item* iron, item* silicon, item* rubbish, 
 	int* oxygennumber,int* carbonnumber, int* ironnumber, int* siliconnumber, int* rubbishnumber, int* oxygengain,
 	int* carbongain,int* irongain, int* silicongain, char exception[]) {
 	int a = 0;
+	item* tlast = new item();
 	while (a < 50) {
-		item* tlast = new item();
-		if (a == 40) {
-			tlast = rubbish;
-			a = 50;
-		}
-		if (a == 30 && exception == "silicon") {
-			tlast = rubbish;
-			a = 50;
-		}
-		if (a == 30 && exception != "silicon") {
-			tlast = silicon;
-			a = 40;
-		}
-		if (a == 20 && exception == "iron") {
-			tlast = silicon;
-			a = 40;
-		}
-		if (a == 20 && exception != "iron") {
-			tlast = iron;
-			a = 30;
-		}
-		if (a == 10 && exception == "carbon") {
-			tlast = iron;
-			a = 30;
-		}
-		if (a == 10 && exception != "carbon") {
-			tlast = carbon;
-			a = 20;
-		}
-		if (a == 0 && exception == "oxygen") {
-			tlast = carbon;
-			a = 20;
-		}
-		if (a == 0 && exception != "oxygen") {
-			tlast = oxygen;
-			a = 10;
+		switch(a) {
+				case 0:
+				tlast = oxygen;
+				break;
+				case 10:
+				tlast = carbon;
+				break;
+				case 20:
+				tlast = iron;
+				break;
+				case 30:
+					tlast = silicon;
+					break;
+				case 40:
+					tlast = rubbish;
+					break;
 		}
 		bulletchain* thisbullet = bullet;
 		while (thisbullet) {
 			item* last=tlast;
 			item* head = last;
-			item* rlast = last;
-			while (rlast) {
-				if (((thisbullet->x + thisbullet->size) > rlast->x || (thisbullet->x - thisbullet->size) < (rlast->x + 100 * rlast->size)) &&
-					((thisbullet->y + thisbullet->size) > rlast->y || (thisbullet->y - thisbullet->size) < (rlast->y + 100 * rlast->size))) {
-					rlast->blood -= thisbullet->attack;//陨石扣血
+			while (last) {
+				if (((thisbullet->x + thisbullet->size) > last->x || (thisbullet->x - thisbullet->size) < (last->x + 100 * last->size)) &&
+					((thisbullet->y + thisbullet->size) > last->y || (thisbullet->y - thisbullet->size) < (last->y + 100 * last->size))) {
+					last->blood -= thisbullet->attack;//陨石扣血
 					thisbullet->hit++;
-					if (rlast->blood <= 0) {
+					if (last->blood <= 0) {
 						switch (a) {
 						case 10:
-							*oxygengain += (rlast->size) * 25;
+							*oxygengain += (last->size) * 25;
 							*oxygennumber--;
+							updateList(&oxygen, oxygennumber);
 							break;
 						case 20:
-							*carbongain += (rlast->size) * 25;
+							*carbongain += (last->size) * 25;
 							*carbonnumber--;
+							updateList(&carbon, carbonnumber);
 							break;
 						case 30:
-							*irongain += (rlast->size) * 25;
+							*irongain += (last->size) * 25;
 							*ironnumber--;
+							updateList(&iron,ironnumber);
 							break;
 						case 40:
-							*silicongain += (rlast->size) * 25;
+							*silicongain += (last->size) * 25;
 							*siliconnumber--;
+							updateList(&silicon, siliconnumber);
 							break;
-						case 50:*rubbishnumber--; break;
+						case 50:*rubbishnumber--; updateList(&rubbish, rubbishnumber); break;
 						}//计算材料捕获数，减少陨石总量
-						if (rlast == last) {
+						if (last == head) {
 							last = last->next;
-							free(rlast);
-							rlast = last;
+							free(head);
+							tlast = last;
 							head = last;
 						}
 						else {
-							rlast = rlast->next;
+							last = last->next;
 							free(head->next);
-							head->next = rlast;
+							head->next = last;
 						}//删除空血量陨石
 					}
 					else {
-						if (last != rlast) {
+						if (last != head) {
 							head = head->next;
 						}
-						rlast = rlast->next;
+						last = last->next;
 					}
 				}//判定受击陨石
 			}
 			thisbullet = thisbullet->next;
 			delete(last);
-			delete(rlast);
+			delete(head);
 		}
-		item* last = tlast;
-		item* rlast = last;
-		while (rlast) {
-			rlast->x += rlast->speedx;
-			rlast->y += rlast->speedy;
-			rlast = rlast->next;
-		}
-		rlast = last;
-		while (rlast) {
-			if (rlast->x < -rlast->size * 50 || rlast->x>1300 || rlast->y < -rlast->size * 50 || rlast->y>700) {
-				if (rlast == tlast) {
-					tlast = tlast->next;
-					rlast = tlast;
-					last = tlast;
-				}
-				else last->next = rlast->next;
-			}
-			else {
-				if (rlast != tlast) last = last->next;
-			}
-			rlast = rlast->next;
-		}
+		a += 10;
 		
 	}//判定受击陨石，陨石扣血，删除空血量陨石，计算材料捕获数，减少陨石总量
 	bulletchain* thisbullet = bullet;
 	bulletchain* headbullet = thisbullet;
+	delete(tlast);
 	while (thisbullet) {
 		if (thisbullet->hit > 0) {
 			if (thisbullet == bullet) {
@@ -209,4 +174,25 @@ void updataWithoutInput(bulletchain* bullet, item* oxygen, item* carbon, item* i
 			*carbonnumber++;
 		}
 	}//判定是否增加陨石
+}
+void updateList(item** head, int* count) {
+	item* curr = *head;
+	item* prev = NULL;
+	while (curr) {
+		curr->x += curr->speedx;
+		curr->y += curr->speedy;
+		// 边界检查
+		if (curr->x < -200 || curr->x > 1500 || curr->y < -200 || curr->y > 900) {
+			item* tmp = curr;
+			if (prev == NULL) *head = curr->next;
+			else prev->next = curr->next;
+			curr = curr->next;
+			delete tmp; // 释放内存
+			if (count) (*count)--;
+		}
+		else {
+			prev = curr;
+			curr = curr->next;
+		}
+	}
 }

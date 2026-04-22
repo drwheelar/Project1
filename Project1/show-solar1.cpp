@@ -36,9 +36,41 @@ void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, it
 	BeginBatchDraw();
 	putimage(0, 0, cover);
 	bulletchain* thisbullet = bullet;
+	IMAGE* l = new IMAGE();
+	IMAGE* m = new IMAGE();
+	IMAGE oxygenpic[3] ;
+	loadimage(l, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"),150,150);
+	for (int i = 0; i < 3; i++) {
+		Resize(l, (i + 1) * 50, (i + 1) * 50);
+		oxygenpic[i] = *l;
+	}
+	IMAGE ironpic[3] ;
+	loadimage(l, _T("D:\\game\\pack\\solar1\\iron\\1.png"), 150, 150);
+	for (int i = 0; i < 3; i++) {
+		Resize(l,( i + 1 )* 50,( i + 1 )* 50);
+		ironpic[i] = *l;
+	}
+	IMAGE silliconpic[3] ;
+	loadimage(l, _T("D:\\game\\pack\\solar1\\sillocon\\1.png"), 150, 150);
+	for (int i = 0; i < 3; i++) {
+		Resize(l, (i + 1) * 50, (i + 1) * 50);
+		silliconpic[i] = *l;
+	}
+	IMAGE carbonpic[3] ;
+	loadimage(l, _T("D:\\game\\pack\\solar1\\carbon\\1.png"), 150, 150);
+	for (int i = 0; i < 3; i++) {
+		Resize(l, (i + 1) * 50, (i + 1) * 50);
+		carbonpic[i] = *l;
+	}
+	IMAGE rubbishpicchain[3];
+	l = rubbishpic;
+	for (int i = 0; i < 3; i++) {
+		Resize(l, (i + 1) * 50, (i + 1) * 50);
+		rubbishpicchain[i] = *l;
+	}
+	delete(l);
 	while (thisbullet) {
-		RotateImageAlpha(after, thisbullet->bulletpic, thisbullet->rad, 25, 25, false);
-		putimage_a(thisbullet->x, thisbullet->y, after);
+		if (thisbullet->bulletpic != NULL) putimage_a(thisbullet->x, thisbullet->y, thisbullet->bulletpic);
 		thisbullet = thisbullet->next;
 	}
 	item* last = oxygen;
@@ -90,44 +122,36 @@ void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, it
 			loadimage(after, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"), 150, 150);
 		}*/
 	if (exception != "oxygen") {
-		loadimage(after, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"), 150, 150);
 		while (last) {
-			Resize(after, last->size * 50, last->size * 50);
-			putimage_a(last->x, last->y, after);
+			putimage_a(last->x, last->y,&oxygenpic[last->size-1]);
 			last = last->next;
 		}
 	}
 	if(exception != "carbon"){
-		loadimage(after, _T("D:\\game\\pack\\solar1\\carbon\\1.png"), 150, 150);
 		last = carbon;
 		while (last) {
-			Resize(after, last->size * 50, last->size * 50);
-			putimage_a(last->x, last->y, after);
+			putimage_a(last->x, last->y, &carbonpic[last->size - 1]);
 			last = last->next;
 		}
 	}
 	if (exception != "silicon") {
-		loadimage(after, _T("D:\\game\\pack\\solar1\\sillicon\\1.png"), 150, 150);
 		last = silicon;
 		while (last) {
-			Resize(after, last->size * 50, last->size * 50);
-			putimage_a(last->x, last->y, after);
+			putimage_a(last->x, last->y,&silliconpic[last->size - 1]);
 			last = last->next;
 		}
 	}
 	if (exception != "iron") {
-		loadimage(after, _T("D:\\game\\pack\\solar1\\iron\\1.png"), 150, 150);
 		last = iron;
 		while (last) {
-			Resize(after, last->size * 50, last->size * 50);
-			putimage_a(last->x, last->y, after);
+			putimage_a(last->x, last->y, &ironpic[last->size - 1]);
 			last = last->next;
 		}
 	}
 	last = rubbish;
 	while (last) {;
 		Resize(rubbishpic, last->size * 50, last->size * 50);
-		putimage_a(last->x, last->y, rubbishpic);
+		putimage_a(last->x, last->y,& rubbishpicchain[last->size - 1]);
 		last = last->next;
 	}
 	delete(last);
