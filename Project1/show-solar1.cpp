@@ -23,7 +23,6 @@ typedef struct bulletchain {
 	double rad;
 	int x;
 	int y;
-	double rad;
 	int speed;
 	int size;
 	int attack;
@@ -32,8 +31,8 @@ typedef struct bulletchain {
 };
 void putimage_a(int x, int y, IMAGE* pImg);
 void RotateImageAlpha(IMAGE* after, IMAGE* before, double radian, int px, int py, bool autosize = true);
-void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, item* carbon, item* iron, item* silicon, item* rubbish, IMAGE* after,
-	double shootrad, char exception[]) {
+void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, item* carbon, item* iron,
+	item* silicon, item* rubbish, IMAGE* after,double shootrad, char exception[]) {
 	BeginBatchDraw;
 	putimage(0, 0, cover);
 	bulletchain* thisbullet = bullet;

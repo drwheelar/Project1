@@ -9,8 +9,8 @@
 void putimage_a(int x, int y, IMAGE* pImg);
 bool login();
 IMAGE* drawrubbish();
-void play();
-void solar1(IMAGE* rubbish,char exception[], int a, int b, int c);
+void play(IMAGE* rubbishpic, char exception[], int speed1, int size1, int attack1);
+void solar1(IMAGE* rubbishpic, char exception[], int speed1, int size1, int attack1);
 int main() {
 	initgraph(1300, 700);
 	setbkmode(TRANSPARENT);
@@ -24,18 +24,15 @@ int main() {
 	if (login()) {
 		rubbish = drawrubbish();
 		setbkcolor(BLUE);
-		BeginBatchDraw();
-		cleardevice();
-		putimage_a(0, 0, rubbish);
-		FlushBatchDraw();
-		EndBatchDraw();
-		while (1) { play();}
-
+		char str[] = "silicon";
+		IMAGE* cover = new IMAGE();
+		//loadimage(cover, _T("D:\\game\\pack\\solar1\\background\\cover.png"), 1300, 700);
+		//putimage(0, 0, cover);
+		 play(rubbish,str,5,50,50);
+		 while(1){}
 	}
 	return 1;
 }
-void play() {
-	char str[] = "silicon";
-	IMAGE* rubbish = new IMAGE();
-	solar1(rubbish,str, 5,50,50);
+void play(IMAGE* rubbishpic, char exception[], int speed1, int size1, int attack1) {
+	solar1(rubbishpic,  exception,  speed1, size1,  attack1);
 }

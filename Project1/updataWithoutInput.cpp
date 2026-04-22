@@ -19,7 +19,6 @@ typedef struct item {
 };
 typedef struct bulletchain {
 	IMAGE* bulletpic;
-	double rad;
 	int x;
 	int y;
 	double rad;
@@ -30,9 +29,9 @@ typedef struct bulletchain {
 	struct bulletchain* next;
 };
 void inititem(item* start);//初始化单个陨石
-void updataWithoutInput(bulletchain* bullet, item* oxygen, item* carbon, item* iron, item* silicon, item* rubbish, int* oxygennumber,
-	int* carbonnumber, int* ironnumber, int* siliconnumber, int* rubbishnumber, int* oxygengain, int* carbongain,
-	int* irongain, int* silicongain, char exception[]) {
+void updataWithoutInput(bulletchain* bullet, item* oxygen, item* carbon, item* iron, item* silicon, item* rubbish, 
+	int* oxygennumber,int* carbonnumber, int* ironnumber, int* siliconnumber, int* rubbishnumber, int* oxygengain,
+	int* carbongain,int* irongain, int* silicongain, char exception[]) {
 	int a = 0;
 	while (a < 50) {
 		item* tlast = new item();
@@ -124,8 +123,31 @@ void updataWithoutInput(bulletchain* bullet, item* oxygen, item* carbon, item* i
 			}
 			thisbullet = thisbullet->next;
 			delete(last);
+			delete(rlast);
 		}
-		item* last = rlast;
+		item* last = tlast;
+		item* rlast = last;
+		while (rlast) {
+			rlast->x += rlast->speedx;
+			rlast->y += rlast->speedy;
+			rlast = rlast->next;
+		}
+		rlast = last;
+		while (rlast) {
+			if (rlast->x < -rlast->size * 50 || rlast->x>1300 || rlast->y < -rlast->size * 50 || rlast->y>700) {
+				if (rlast == tlast) {
+					tlast = tlast->next;
+					rlast = tlast;
+					last = tlast;
+				}
+				else last->next = rlast->next;
+			}
+			else {
+				if (rlast != tlast) last = last->next;
+			}
+			rlast = rlast->next;
+		}
+		
 	}//判定受击陨石，陨石扣血，删除空血量陨石，计算材料捕获数，减少陨石总量
 	bulletchain* thisbullet = bullet;
 	bulletchain* headbullet = thisbullet;

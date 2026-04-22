@@ -23,7 +23,6 @@ typedef struct bulletchain {
 	double rad;
 	int x;
 	int y;
-	double rad;
 	int speed;
 	int size;
 	int attack;
@@ -34,15 +33,21 @@ void putimage_a(int x, int y, IMAGE* pImg);
 void RotateImageAlpha(IMAGE* after, IMAGE* before, double radian, int px, int py, bool autosize = true);
 void init(item* start, int number);//初始化陨石群
 void inititem(item* start);//初始化单个陨石
-void updataWithoutInput(bulletchain*bullet,item*a,item*b,item*c,item*d,item*e,int*A,
-	int*B,int*C,int*D,int*E,int*q,int*w,int*r,int*t,char* k);
+void updataWithoutInput(bulletchain* bullet, item* oxygen, item* carbon, item* iron, item* silicon, item* rubbish,
+	int* oxygennumber, int* carbonnumber, int* ironnumber, int* siliconnumber, int* rubbishnumber, int* oxygengain,
+	int* carbongain, int* irongain, int* silicongain, char exception[]);
 void updataWithInput(bulletchain* bullet, item* a, item* b, item* c, item* d, item* e,double*shootrad,int*stop,
 	int speed1, int size1, int attack1);
-void show(IMAGE*rubbishpic,IMAGE*cover,bulletchain* bullet, item* a, item* b, item* c, item* d, item* e,IMAGE*shooter,double rad,char*k);
+void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, item* carbon, item* iron,
+	item* silicon, item* rubbish, IMAGE* after, double shootrad, char exception[]);
 void solar1(IMAGE* rubbishpic, char exception[], int speed1, int size1, int attack1){
 	IMAGE* cover = new IMAGE();
-	loadimage(cover, _T("D:\\game\\pack\\solar1\\back\\back.png"), 1300, 700);
+	loadimage(cover, _T("D:\\game\\pack\\solar1\\background\\cover.png"), 1300, 700);
 	putimage(0, 0, cover);
+	IMAGE* shooter = new IMAGE ();
+	IMAGE* after = shooter;
+	loadimage(shooter, _T("D:\\game\\pack\\solar1\\shooter\\shooter.png"),260,260);
+	putimage(0, 0, shooter);
 	item* oxygen = (item*)malloc(sizeof(item));
 	item* carbon = (item*)malloc(sizeof(item));
 	item* iron = (item*)malloc(sizeof(item));
@@ -64,15 +69,11 @@ void solar1(IMAGE* rubbishpic, char exception[], int speed1, int size1, int atta
 	int carbongain = 0;
 	int irongain = 0;
 	int silicongain = 0;
-	ExMessage m;
 	int stop = 0;
 	double shootrad = 0;
-	IMAGE* shooter = new IMAGE ();
-	IMAGE* after = shooter;
-	char key = NULL;
-	loadimage(shooter, _T("D:\\game\\pack\\solar1\\shooter\\shooter.png"),260,260);
-	double angle;
+
 	while (1) {
+		putimage(0, 0, shooter);
 		if (stop == 1) continue;
 		show(rubbishpic,cover,bullet,oxygen,carbon,iron,silicon,rubbish,after,shootrad,exception);
 		updataWithoutInput(bullet,oxygen,carbon,iron,silicon,rubbish,&oxygennumber,&carbonnumber,
@@ -154,7 +155,7 @@ void updataWithInput(bulletchain* bullet, item* a, item* b, item* c, item* d, it
 		if (key == 77) *shootrad += 5;
 		else if (key == 75) *shootrad -= 5;
 		else if (key == 72) {
-			bulletchain* newbullet;
+			bulletchain* newbullet=new bulletchain();
 			IMAGE bulletpicture;
 			loadimage(&bulletpicture, _T("D:\\game\\pack\\solar1\\shooter\\bullet.png"), 40, 40);
 			newbullet->bulletpic = &bulletpicture;
