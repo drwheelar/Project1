@@ -33,7 +33,7 @@ void putimage_a(int x, int y, IMAGE* pImg);
 void RotateImageAlpha(IMAGE* after, IMAGE* before, double radian, int px, int py, bool autosize = true);
 void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, item* carbon, item* iron,
 	item* silicon, item* rubbish, IMAGE* after,double shootrad, char exception[]) {
-	BeginBatchDraw;
+	BeginBatchDraw();
 	putimage(0, 0, cover);
 	bulletchain* thisbullet = bullet;
 	while (thisbullet) {
@@ -42,9 +42,8 @@ void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, it
 		thisbullet = thisbullet->next;
 	}
 	item* last = oxygen;
-	int a = NULL;
-	while (last) {
-		item* last = new item();
+	/*int a = 0;
+	while (a<50) {
 		if (a == 40) {
 			last = rubbish;
 			a = 50;
@@ -89,12 +88,49 @@ void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, it
 			last = oxygen;
 			a = 10;
 			loadimage(after, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"), 150, 150);
-		}
+		}*/
+	if (exception != "oxygen") {
+		loadimage(after, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"), 150, 150);
 		while (last) {
 			Resize(after, last->size * 50, last->size * 50);
 			putimage_a(last->x, last->y, after);
+			last = last->next;
 		}
 	}
+	if(exception != "carbon"){
+		loadimage(after, _T("D:\\game\\pack\\solar1\\carbon\\1.png"), 150, 150);
+		last = carbon;
+		while (last) {
+			Resize(after, last->size * 50, last->size * 50);
+			putimage_a(last->x, last->y, after);
+			last = last->next;
+		}
+	}
+	if (exception != "silicon") {
+		loadimage(after, _T("D:\\game\\pack\\solar1\\sillicon\\1.png"), 150, 150);
+		last = silicon;
+		while (last) {
+			Resize(after, last->size * 50, last->size * 50);
+			putimage_a(last->x, last->y, after);
+			last = last->next;
+		}
+	}
+	if (exception != "iron") {
+		loadimage(after, _T("D:\\game\\pack\\solar1\\iron\\1.png"), 150, 150);
+		last = iron;
+		while (last) {
+			Resize(after, last->size * 50, last->size * 50);
+			putimage_a(last->x, last->y, after);
+			last = last->next;
+		}
+	}
+	last = rubbish;
+	while (last) {;
+		Resize(rubbishpic, last->size * 50, last->size * 50);
+		putimage_a(last->x, last->y, rubbishpic);
+		last = last->next;
+	}
+	delete(last);
 	IMAGE* before = new IMAGE();
 	loadimage(before, _T("D:\\game\\pack\\solar1\\shooter\\shooter.png"), 250, 250);
 	double angle = shootrad * PI / 180;

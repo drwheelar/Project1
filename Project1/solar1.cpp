@@ -48,17 +48,12 @@ void solar1(IMAGE* rubbishpic, char exception[], int speed1, int size1, int atta
 	IMAGE* after = shooter;
 	loadimage(shooter, _T("D:\\game\\pack\\solar1\\shooter\\shooter.png"),260,260);
 	putimage(0, 0, shooter);
-	item* oxygen = (item*)malloc(sizeof(item));
-	item* carbon = (item*)malloc(sizeof(item));
-	item* iron = (item*)malloc(sizeof(item));
-	item* rubbish = (item*)malloc(sizeof(item));
-	item* silicon = (item*)malloc(sizeof(item));
+	item* oxygen = new item(); init(oxygen, 10);
+	item* carbon = new item(); init(carbon, 10);
+	item* iron = new item(); init(iron, 10);
+	item* rubbish = new item(); init(rubbish, 5);
+	item* silicon = new item(); init(silicon, 10);
 	bulletchain* bullet = NULL;
-	init(oxygen, 10);
-	init(carbon, 10);
-	init(iron, 10);
-	init(rubbish, 5);
-	init(silicon, 10);
 	int gamestop = 1;
 	int oxygennumber = 10;
 	int ironnumber = 10;
@@ -73,12 +68,12 @@ void solar1(IMAGE* rubbishpic, char exception[], int speed1, int size1, int atta
 	double shootrad = 0;
 
 	while (1) {
-		putimage(0, 0, shooter);
 		if (stop == 1) continue;
-		show(rubbishpic,cover,bullet,oxygen,carbon,iron,silicon,rubbish,after,shootrad,exception);
 		updataWithoutInput(bullet,oxygen,carbon,iron,silicon,rubbish,&oxygennumber,&carbonnumber,
 			&ironnumber,&siliconnumber,&rubbishnumber,&oxygengain,&carbongain,&irongain,&silicongain,exception);
 		updataWithInput(bullet, oxygen, carbon, iron, silicon, rubbish, &shootrad,& stop, speed1, size1,  attack1);
+		show(rubbishpic, cover, bullet, oxygen, carbon, iron, silicon, rubbish, after, shootrad, exception);
+		Sleep(10);
 
 	}
 }
@@ -150,34 +145,36 @@ void updataWithInput(bulletchain* bullet, item* a, item* b, item* c, item* d, it
 			else *stop = 0;
 		}
 	}
-	if (_getch() == 224) {
-		int key = _getch();
-		if (key == 77) *shootrad += 5;
-		else if (key == 75) *shootrad -= 5;
-		else if (key == 72) {
-			bulletchain* newbullet=new bulletchain();
-			IMAGE bulletpicture;
-			loadimage(&bulletpicture, _T("D:\\game\\pack\\solar1\\shooter\\bullet.png"), 40, 40);
-			newbullet->bulletpic = &bulletpicture;
-			newbullet->rad = *shootrad;
-			double angle = *shootrad * PI / 180;
-			if (angle <= 0) {
-				newbullet->x = 650 + 125 * sin(angle) - 25 * cos(angle);
-				newbullet->y = 675 - 125 * cos(angle) + 25 * sin(angle);
-			}
-			else {
-				newbullet->x = 650 + 125 * sin(angle) - 25 * cos(angle) - 25 * sin(angle);
-				newbullet->y = 675 - 125 * cos(angle) + 25 * sin(angle);
-			}
-			newbullet->speed = speed1;
-			newbullet->size = size1;
-			newbullet->attack = attack1;
-			newbullet->hit = 0;
-			if (!bullet) bullet = newbullet;
-			else {
-				bulletchain* last = bullet;
-				while (last->next) last = last->next;
-				last->next = newbullet;
+	if (_kbhit()) {
+		if (_getch() == 224) {
+			int key = _getch();
+			if (key == 77) *shootrad += 5;
+			else if (key == 75) *shootrad -= 5;
+			else if (key == 72) {
+				bulletchain* newbullet = new bulletchain();
+				IMAGE bulletpicture;
+				loadimage(&bulletpicture, _T("D:\\game\\pack\\solar1\\shooter\\bullet.png"), 40, 40);
+				newbullet->bulletpic = &bulletpicture;
+				newbullet->rad = *shootrad;
+				double angle = *shootrad * PI / 180;
+				if (angle <= 0) {
+					newbullet->x = 650 + 125 * sin(angle) - 25 * cos(angle);
+					newbullet->y = 675 - 125 * cos(angle) + 25 * sin(angle);
+				}
+				else {
+					newbullet->x = 650 + 125 * sin(angle) - 25 * cos(angle) - 25 * sin(angle);
+					newbullet->y = 675 - 125 * cos(angle) + 25 * sin(angle);
+				}
+				newbullet->speed = speed1;
+				newbullet->size = size1;
+				newbullet->attack = attack1;
+				newbullet->hit = 0;
+				if (!bullet) bullet = newbullet;
+				else {
+					bulletchain* last = bullet;
+					while (last->next) last = last->next;
+					last->next = newbullet;
+				}
 			}
 		}
 	}
