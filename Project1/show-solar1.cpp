@@ -20,15 +20,16 @@ typedef struct item {
 };
 typedef struct bulletchain {
 	IMAGE* bulletpic;
-	double rad;
 	int x;
 	int y;
+	double rad;
 	int speed;
 	int size;
 	int attack;
 	int hit;
 	struct bulletchain* next;
 };
+void premultiply(IMAGE* pImg);
 void putimage_a(int x, int y, IMAGE* pImg);
 void RotateImageAlpha(IMAGE* after, IMAGE* before, double radian, int px, int py, bool autosize = true);
 void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, item* carbon, item* iron,
@@ -36,44 +37,11 @@ void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, it
 	BeginBatchDraw();
 	putimage(0, 0, cover);
 	bulletchain* thisbullet = bullet;
-	IMAGE* l = new IMAGE();
-	IMAGE* m = new IMAGE();
-	IMAGE oxygenpic[3] ;
-	loadimage(l, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"),150,150);
-	for (int i = 0; i < 3; i++) {
-		Resize(l, (i + 1) * 50, (i + 1) * 50);
-		oxygenpic[i] = *l;
-	}
-	IMAGE ironpic[3] ;
-	loadimage(l, _T("D:\\game\\pack\\solar1\\iron\\1.png"), 150, 150);
-	for (int i = 0; i < 3; i++) {
-		Resize(l,( i + 1 )* 50,( i + 1 )* 50);
-		ironpic[i] = *l;
-	}
-	IMAGE silliconpic[3] ;
-	loadimage(l, _T("D:\\game\\pack\\solar1\\sillocon\\1.png"), 150, 150);
-	for (int i = 0; i < 3; i++) {
-		Resize(l, (i + 1) * 50, (i + 1) * 50);
-		silliconpic[i] = *l;
-	}
-	IMAGE carbonpic[3] ;
-	loadimage(l, _T("D:\\game\\pack\\solar1\\carbon\\1.png"), 150, 150);
-	for (int i = 0; i < 3; i++) {
-		Resize(l, (i + 1) * 50, (i + 1) * 50);
-		carbonpic[i] = *l;
-	}
-	IMAGE rubbishpicchain[3];
-	l = rubbishpic;
-	for (int i = 0; i < 3; i++) {
-		Resize(l, (i + 1) * 50, (i + 1) * 50);
-		rubbishpicchain[i] = *l;
-	}
-	delete(l);
+
 	while (thisbullet) {
 		if (thisbullet->bulletpic != NULL) putimage_a(thisbullet->x, thisbullet->y, thisbullet->bulletpic);
 		thisbullet = thisbullet->next;
 	}
-	item* last = oxygen;
 	/*int a = 0;
 	while (a<50) {
 		if (a == 40) {
@@ -121,45 +89,57 @@ void show(IMAGE* rubbishpic, IMAGE* cover, bulletchain* bullet, item* oxygen, it
 			a = 10;
 			loadimage(after, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"), 150, 150);
 		}*/
-	if (exception != "oxygen") {
+	IMAGE k;
+	if (strcmp(exception, "oxygen") != 0) {
+		loadimage(&k, _T("D:\\game\\pack\\solar1\\oxygen\\1.png"), 150, 150);
+		item*last = oxygen;
 		while (last) {
-			putimage_a(last->x, last->y,&oxygenpic[last->size-1]);
+			Resize(&k, (last->size)*50,( last->size) * 50);
+			putimage_a(last->x, last->y,&k);
 			last = last->next;
 		}
 	}
-	if(exception != "carbon"){
-		last = carbon;
+	if(strcmp(exception, "carbon") != 0){
+		item* last = carbon;
+		loadimage(&k, _T("D:\\game\\pack\\solar1\\carbon\\1.png"), 150, 150);
 		while (last) {
-			putimage_a(last->x, last->y, &carbonpic[last->size - 1]);
+			Resize(&k, (last->size) * 50,( last->size )* 50);
+			putimage_a(last->x, last->y, &k);
 			last = last->next;
 		}
 	}
-	if (exception != "silicon") {
-		last = silicon;
+	if (strcmp(exception, "silicon") != 0) {
+		item* last = silicon;
+		loadimage(&k, _T("D:\\game\\pack\\solar1\\silicon\\1.png"), 150, 150);
 		while (last) {
-			putimage_a(last->x, last->y,&silliconpic[last->size - 1]);
+			Resize(&k, (last->size )* 50,( last->size) * 50);
+			putimage_a(last->x, last->y,& k);
 			last = last->next;
 		}
 	}
-	if (exception != "iron") {
-		last = iron;
+	if (strcmp(exception, "iron") != 0) {
+		item* last = iron;
+		loadimage(&k, _T("D:\\game\\pack\\solar1\\iron\\1.png"), 150, 150);
 		while (last) {
-			putimage_a(last->x, last->y, &ironpic[last->size - 1]);
+			Resize(&k,( last->size) * 50,( last->size) * 50);
+			putimage_a(last->x, last->y, &k);
 			last = last->next;
 		}
 	}
-	last = rubbish;
-	while (last) {;
+	item* last = rubbish;
+	while (last) {
 		Resize(rubbishpic, last->size * 50, last->size * 50);
-		putimage_a(last->x, last->y,& rubbishpicchain[last->size - 1]);
+		putimage_a(last->x, last->y, rubbishpic);
 		last = last->next;
 	}
-	delete(last);
 	IMAGE* before = new IMAGE();
+	IMAGE* d = new IMAGE();
 	loadimage(before, _T("D:\\game\\pack\\solar1\\shooter\\shooter.png"), 250, 250);
 	double angle = shootrad * PI / 180;
-	RotateImageAlpha(after, before, angle, 125, 125, false);
-	putimage_a(525, 550, after);
+	RotateImageAlpha(d, before, angle, 125, 125, false);
+	putimage_a(525, 550, d);
+	delete(before);
+	delete(d);
 	FlushBatchDraw();
 	EndBatchDraw();
 }
