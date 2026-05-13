@@ -42,5 +42,11 @@
     <ClCompile Include="show-solar1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Resize_a.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="upgrade.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
